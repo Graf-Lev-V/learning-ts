@@ -4,17 +4,18 @@ import Button from './Button'
 
 type User = {
     name: string,
-    age?: number
+    age?: number,
+    id: string
 }
 
 export default function UserForm() {
 
     const [name, setName] = useState<string>('')
-    const [user, setUser] = useState<User | null>(null)
+    const [users, setUsers] = useState<User[]>([])
 
     function handleSubmit(e: React.SubmitEvent<HTMLFormElement>) {
         e.preventDefault()
-        setUser({name: name})
+        setUsers([...users, {name: name, id: crypto.randomUUID()}])
     }
     function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
         setName(e.target.value)
@@ -26,7 +27,7 @@ export default function UserForm() {
                 <input onChange={handleChange} value={name}></input>
                 <Button label="button" onClick={() => console.log('clicked')} type='submit'/>
             </form>
-            {user && <UserCard name={user.name}/>}
+            {users && users.map((user) => <UserCard key={user.id} name={user.name}/>)}
         </>
     )
 }
