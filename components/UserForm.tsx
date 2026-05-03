@@ -3,9 +3,9 @@ import UserCard from "./UserCard"
 import Button from './Button'
 
 type User = {
-    name: string,
-    age?: number,
-    id: string
+    name: string;
+    age?: number;
+    id: string;
 }
 
 export default function UserForm() {

@@ -1,12 +1,10 @@
 type UserCardProps = {
-    name: string,
-    age?: number,
-    isOnline?: boolean
+    name: string;
+    age?: number;
+    isOnline?: boolean;
 }
 
 export default function UserCard({name, age, isOnline}: UserCardProps) {
-
-
 
     return (
         <>
