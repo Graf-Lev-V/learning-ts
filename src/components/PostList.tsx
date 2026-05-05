@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import useFetch from '../hooks/useFetch'
 
 type Post = {
     id: number;
@@ -25,48 +25,13 @@ console.log(result3)
 
 export default function PostList() {
 
-    const [posts, setPosts] = useState<Post[]>([]);
-    const [loading, setLoading] = useState<boolean>(false);
-    const [error, setError] = useState<string | null>(null);
-
-    //custom generic
-    function getLastItem<T>(arr: T[]): T {
-        return arr[arr.length - 1];
-    }
-
-    useEffect(() => {
-        setLoading(true);
-        setError(null);
-        const controller = new AbortController();
-
-        (async () => {
-            try {
-                const response = await fetch('https://jsonplaceholder.typicode.com/posts', {signal: controller.signal})
-                if (!response.ok) throw new Error('Error')
-                const data: Post[] = await response.json()
-                setPosts(data)
-                console.log(getLastItem(data))
-            }
-            catch (error) {
-                if (error instanceof Error && error.name !== 'AbortError') {
-                    setError(error.message);
-                }
-            }
-            finally {
-                if (!controller.signal.aborted) {
-                    setLoading(false);
-                }
-            }
-        })()
-
-        return () => controller.abort();
-    }, [])
+    const posts = useFetch<Post[]>('https://jsonplaceholder.typicode.com/posts')
 
     return (
         <>
-            {error && <p>{error}</p>}
-            {loading && <p>Loading...</p>}
-            {posts.map((post) => <p key={post.id}>{post.title}<br/>{post.body}</p>)}
+            {posts.error && <p>{posts.error}</p>}
+            {posts.loading && <p>Loading...</p>}
+            {posts.data && posts.data.map((post) => <p key={post.id}>{post.title}<br/>{post.body}</p>)}
         </>
     )
 }
