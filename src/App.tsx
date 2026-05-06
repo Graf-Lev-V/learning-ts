@@ -1,25 +1,21 @@
-import UserCard from './components/UserCard'
-import UserForm from './components/UserForm'
 import PostList from './components/PostList'
 import UserList from './components/UserList'
-import { useState } from 'react'
+import { Routes, Route, Navigate } from 'react-router-dom'
+import PostDetail from './components/PostDetail'
+import NotFound from './components/NotFound'
+import Layout from './components/Layout'
 
 export default function App() {
 
-  const [body, setBody] = useState<string | null>(null)
-
   return (
-    <>
-      <UserCard name="Jhon" age={25} isOnline={true}></UserCard>
-      <hr></hr>
-      <UserCard name='Den'></UserCard>
-      <hr/>
-      <UserForm/>
-      <hr/>
-      <button onClick={() => setBody('Users')}>Users</button>
-      <button onClick={() => setBody('Posts')}>Posts</button>
-      {body === 'Posts' && <PostList/>}
-      {body === 'Users' && <UserList/>}
-    </>
+    <Routes>
+      <Route element={<Layout/>}>
+        <Route path='/users' element={<UserList/>}></Route>
+        <Route path='/posts' element={<PostList/>}></Route>
+        <Route path='/posts/:id' element={<PostDetail/>}></Route>
+        <Route path='*' element={<NotFound/>}></Route>
+        <Route path='/' element={<Navigate to={'/users'}/>}/>
+      </Route>
+    </Routes>
   )
 }

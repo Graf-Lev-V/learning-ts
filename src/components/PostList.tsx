@@ -1,4 +1,5 @@
 import useFetch from '../hooks/useFetch'
+import { Link } from 'react-router-dom'
 
 type Post = {
     id: number;
@@ -31,7 +32,7 @@ export default function PostList() {
         <>
             {posts.error && <p>{posts.error}</p>}
             {posts.loading && <p>Loading...</p>}
-            {posts.data && posts.data.map((post) => <p key={post.id}>{post.title}<br/>{post.body}</p>)}
+            {posts.data && posts.data.map((post) => <p key={post.id}><Link to={`/posts/${post.id}`}>{post.title}</Link><br/>{post.body}</p>)}
         </>
     )
 }
